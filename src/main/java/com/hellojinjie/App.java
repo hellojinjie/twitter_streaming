@@ -2,6 +2,8 @@ package com.hellojinjie;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.twitter.hbc.ClientBuilder;
 import com.twitter.hbc.core.Client;
 import com.twitter.hbc.core.Constants;
@@ -12,6 +14,7 @@ import com.twitter.hbc.httpclient.auth.OAuth1;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -49,6 +52,8 @@ public class App {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
+        Set<String> usersReturnedByTwitter = Sets.newHashSet();
+
         // Do whatever needs to be done with messages
         for (int msgRead = 0; msgRead < 1000; msgRead++) {
             String msg = queue.take();
@@ -66,6 +71,8 @@ public class App {
                 userId = (Long) user.get("id");
             }
             System.out.println("Is in user list: " + userList.contains(userId));
+            usersReturnedByTwitter.add((String) user.get("screen_name"));
+            System.out.println("We are watching " + userList.size() + " users, Twitter returns " + usersReturnedByTwitter.size() + " users");
         }
 
         client.stop();
