@@ -59,7 +59,13 @@ public class App {
             Map<String, Object> user = (Map<String, Object>) tweet.get("user");
             System.out.println(user.get("screen_name"));
             System.out.println(user.get("id"));
-            System.out.println("Is in user list: " + userList.contains(user.get("id")));
+            Long userId = 0l;
+            if (user.get("id") instanceof Integer) {
+                userId = ((Integer) user.get("id")).longValue();
+            } else {
+                userId = (Long) user.get("id");
+            }
+            System.out.println("Is in user list: " + userList.contains(userId));
         }
 
         client.stop();
